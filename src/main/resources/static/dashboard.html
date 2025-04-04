@@ -4,14 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Approval Workflow System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <style>
-    body {
-      font-family: 'Roboto', sans-serif;
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-foreground: #ffffff;
+      --secondary: #f3f4f6;
+      --secondary-foreground: #1f2937;
+      --background: #f9fafb;
+      --foreground: #111827;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --card-foreground: #111827;
+      --border: #e5e7eb;
+      --border-light: #f3f4f6;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --radius: 0.5rem;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .dark-theme {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-foreground: #ffffff;
+      --secondary: #374151;
+      --secondary-foreground: #f9fafb;
+      --background: #111827;
+      --foreground: #f9fafb;
+      --muted: #9ca3af;
+      --card: #1f2937;
+      --card-foreground: #f9fafb;
+      --border: #374151;
+      --border-light: #272f3d;
+      --success: #059669;
+      --error: #dc2626;
+      --warning: #d97706;
+      --info: #2563eb;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    }
+    
+    * {
       margin: 0;
       padding: 0;
-      background-color: #f5f5f5;
+      box-sizing: border-box;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.5;
     }
     
     .app-container {
@@ -21,73 +78,178 @@
     }
     
     .navbar {
-      background-color: #3f51b5;
-      color: white;
+      background-color: var(--card);
+      color: var(--card-foreground);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 1rem;
+      padding: 0 1.5rem;
       height: 64px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--success) 100%);
     }
     
     .navbar-brand {
-      font-size: 1.5rem;
-      font-weight: 500;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .navbar-brand svg {
+      width: 24px;
+      height: 24px;
+      color: var(--primary);
     }
     
     .navbar-nav {
       display: flex;
       align-items: center;
+      gap: 1rem;
     }
     
     .nav-item {
-      margin-left: 1rem;
+      padding: 0.5rem;
+      border-radius: var(--radius);
       cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    
+    .nav-item:hover {
+      background-color: var(--secondary);
+    }
+    
+    #username {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+    
+    #username::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--success);
+      margin-right: 0.5rem;
+    }
+    
+    #logout {
+      color: var(--muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    #logout:hover {
+      color: var(--error);
+    }
+    
+    #logout::after {
+      content: "exit_to_app";
+      font-family: 'Material Icons';
+      font-size: 1rem;
     }
     
     .main-content {
       flex: 1;
-      padding: 2rem;
+      padding: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
     }
     
     .card {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
+      background-color: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
       padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+    }
+    
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
     }
     
     .card-title {
       font-size: 1.25rem;
-      font-weight: 500;
+      font-weight: 600;
       margin-top: 0;
       margin-bottom: 1rem;
-      color: #333;
+      color: var(--card-foreground);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
     }
     
     .tabs {
       display: flex;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      gap: 0.25rem;
+      flex-wrap: wrap;
     }
     
     .tab {
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem 1rem;
       cursor: pointer;
       font-weight: 500;
-      color: #666;
+      color: var(--muted);
       border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      position: relative;
+    }
+    
+    .tab:hover {
+      color: var(--primary);
     }
     
     .tab.active {
-      color: #3f51b5;
-      border-bottom-color: #3f51b5;
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      background-color: var(--primary);
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      z-index: 1;
     }
     
     .tab-content {
       display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .tab-content.active {
@@ -96,49 +258,163 @@
     
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.875rem;
     }
     
     th, td {
-      padding: 0.75rem;
+      padding: 0.75rem 1rem;
       text-align: left;
-      border-bottom: 1px solid #ddd;
     }
     
     th {
-      font-weight: 500;
-      color: #333;
+      font-weight: 600;
+      color: var(--foreground);
+      background-color: var(--secondary);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    th:first-child {
+      border-top-left-radius: var(--radius);
+    }
+    
+    th:last-child {
+      border-top-right-radius: var(--radius);
+    }
+    
+    tr:last-child td:first-child {
+      border-bottom-left-radius: var(--radius);
+    }
+    
+    tr:last-child td:last-child {
+      border-bottom-right-radius: var(--radius);
+    }
+    
+    tr {
+      border-bottom: 1px solid var(--border-light);
+      transition: background-color 0.2s;
+    }
+    
+    tr:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+    
+    .dark-theme tr:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+    
+    tr:hover {
+      background-color: var(--secondary);
+    }
+    
+    td {
+      border-bottom: 1px solid var(--border-light);
     }
     
     .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       padding: 0.5rem 1rem;
       border: none;
-      border-radius: 4px;
+      border-radius: var(--radius);
       cursor: pointer;
       font-size: 0.875rem;
       font-weight: 500;
-      margin-right: 0.5rem;
+      transition: all 0.2s;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%);
+      transform-origin: 50% 50%;
+    }
+    
+    .btn:focus:not(:active)::after {
+      animation: ripple 0.6s ease-out;
+    }
+    
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(30, 30);
+        opacity: 0;
+      }
     }
     
     .btn-approve {
-      background-color: #4caf50;
+      background-color: var(--success);
       color: white;
+      box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+    }
+    
+    .btn-approve:hover {
+      background-color: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
     }
     
     .btn-reject {
-      background-color: #f44336;
+      background-color: var(--error);
       color: white;
+      box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+    }
+    
+    .btn-reject:hover {
+      background-color: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
     }
     
     .btn-escalate {
-      background-color: #ff9800;
+      background-color: var(--warning);
       color: white;
+      box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+    }
+    
+    .btn-escalate:hover {
+      background-color: #d97706;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(245, 158, 11, 0.3);
     }
     
     .btn-new {
-      background-color: #3f51b5;
+      background-color: var(--primary);
       color: white;
       margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    .btn-new::before {
+      content: "add";
+      font-family: 'Material Icons';
+      margin-right: 0.5rem;
+      font-size: 1.125rem;
+    }
+    
+    .btn-new:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
     }
     
     .modal {
@@ -150,11 +426,12 @@
       height: 100%;
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 1000;
+      backdrop-filter: blur(4px);
     }
     
     .modal-content {
-      background-color: white;
-      border-radius: 8px;
+      background-color: var(--card);
+      border-radius: var(--radius);
       width: 500px;
       max-width: 90%;
       position: absolute;
@@ -162,66 +439,272 @@
       left: 50%;
       transform: translate(-50%, -50%);
       padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      animation: slideIn 0.3s ease-out;
+      border: 1px solid var(--border-light);
+    }
+    
+    @keyframes slideIn {
+      from { transform: translate(-50%, -60%); opacity: 0; }
+      to { transform: translate(-50%, -50%); opacity: 1; }
     }
     
     .modal-title {
       margin-top: 0;
       margin-bottom: 1.5rem;
       font-size: 1.25rem;
-      font-weight: 500;
+      font-weight: 600;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    
+    .modal-title::before {
+      font-family: 'Material Icons';
+      margin-right: 0.75rem;
+      color: var(--primary);
+    }
+    
+    #new-request-modal .modal-title::before {
+      content: "description";
+    }
+    
+    #new-employee-modal .modal-title::before {
+      content: "person_add";
     }
     
     .form-group {
       margin-bottom: 1.5rem;
     }
     
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--foreground);
+      font-size: 0.875rem;
+    }
+    
     .form-control {
       width: 100%;
       padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-color: var(--card);
+      color: var(--foreground);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
     }
     
     .form-actions {
       display: flex;
       justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 2rem;
     }
     
     .hidden {
       display: none;
     }
     
+    /* Status indicators */
     .approved-status {
-      color: #4caf50;
-      font-weight: bold;
+      color: var(--success);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.5rem;
+      background-color: rgba(16, 185, 129, 0.1);
+      border-radius: var(--radius);
     }
     
     .rejected-status {
-      color: #f44336;
-      font-weight: bold;
+      color: var(--error);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.5rem;
+      background-color: rgba(239, 68, 68, 0.1);
+      border-radius: var(--radius);
     }
     
     .escalated-status {
-      color: #ff9800;
-      font-weight: bold;
+      color: var(--warning);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.5rem;
+      background-color: rgba(245, 158, 11, 0.1);
+      border-radius: var(--radius);
+    }
+    
+    .pending-status {
+      color: var(--info);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.5rem;
+      background-color: rgba(59, 130, 246, 0.1);
+      border-radius: var(--radius);
+    }
+    
+    .approved-status::before,
+    .rejected-status::before,
+    .escalated-status::before,
+    .pending-status::before {
+      font-family: 'Material Icons';
+      font-size: 0.875rem;
+      margin-right: 0.25rem;
+    }
+    
+    .approved-status::before {
+      content: "check_circle";
+    }
+    
+    .rejected-status::before {
+      content: "cancel";
+    }
+    
+    .escalated-status::before {
+      content: "upgrade";
+    }
+    
+    .pending-status::before {
+      content: "hourglass_empty";
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      color: var(--muted);
+      font-style: italic;
+      background-color: var(--secondary);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .empty-state::before {
+      content: "inbox";
+      font-family: 'Material Icons';
+      font-size: 2.5rem;
+      color: var(--muted);
+    }
+    
+    /* Theme toggle */
+    .theme-toggle {
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius);
+      transition: background-color 0.2s;
+    }
+    
+    .theme-toggle:hover {
+      background-color: var(--secondary);
+    }
+    
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      color: var(--muted);
+      transition: transform 0.3s ease, color 0.2s;
+    }
+    
+    .theme-toggle:hover svg {
+      color: var(--foreground);
+      transform: rotate(15deg);
+    }
+    
+    /* Header separators */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+      
+      .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+      }
+      
+      .tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .btn {
+        padding: 0.5rem 0.75rem;
+      }
+      
+      table {
+        display: block;
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
 <body>
   <div class="app-container">
     <nav class="navbar">
-      <div class="navbar-brand">Approval Workflow System</div>
+      <div class="navbar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        Approval Workflow System
+      </div>
       <div class="navbar-nav">
+        <div class="nav-item theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="sun-icon">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="moon-icon" style="display: none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </div>
         <div class="nav-item" id="username"></div>
         <div class="nav-item" id="logout">Logout</div>
       </div>
     </nav>
     
     <div class="main-content">
-      <div class="card">
-        <h2 class="card-title">Dashboard</h2>
-        <button class="btn btn-new" id="new-request-btn">New Request</button>
+      <div class="card animate__animated animate__fadeIn">
+        <div class="card-header">
+          <h2 class="card-title">Dashboard</h2>
+          <button class="btn btn-new" id="new-request-btn">New Request</button>
+        </div>
         
         <div class="tabs" id="employee-tabs">
           <!-- Tabs will be dynamically added here -->
@@ -232,10 +715,20 @@
         </div>
       </div>
       
+      <!-- Employee's Request History Section (visible only to employees) -->
+      <div class="card animate__animated animate__fadeIn" id="employee-requests-section">
+        <h2 class="card-title">My Request History</h2>
+        <div id="employee-requests-container">
+          <!-- Request history will be loaded here -->
+        </div>
+      </div>
+      
       <!-- Employee Management Section (visible only to admins) -->
-      <div class="card" id="employee-management-section">
-        <h2 class="card-title">Employee Management</h2>
-        <button class="btn btn-new" id="new-employee-btn">New Employee</button>
+      <div class="card animate__animated animate__fadeIn" id="employee-management-section">
+        <div class="card-header">
+          <h2 class="card-title">Employee Management</h2>
+          <button class="btn btn-new" id="new-employee-btn">New Employee</button>
+        </div>
         
         <table id="employees-table">
           <thead>
@@ -258,7 +751,7 @@
   
   <!-- New Request Modal -->
   <div class="modal" id="new-request-modal">
-    <div class="modal-content">
+    <div class="modal-content animate__animated animate__fadeInUp">
       <h3 class="modal-title">Submit New Request</h3>
       <form id="new-request-form">
         <div class="form-group">
@@ -281,7 +774,7 @@
   
   <!-- New Employee Modal -->
   <div class="modal" id="new-employee-modal">
-    <div class="modal-content">
+    <div class="modal-content animate__animated animate__fadeInUp">
       <h3 class="modal-title">Add New Employee</h3>
       <form id="new-employee-form">
         <div class="form-group">
@@ -321,6 +814,12 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Apply saved theme preference
+      applyThemePreference();
+      
+      // Setup theme toggler
+      document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+      
       // Check if user is logged in
       const token = localStorage.getItem('token');
       const userStr = localStorage.getItem('user');
@@ -340,11 +839,15 @@
         window.location.href = '/';
       });
       
-      // Show/hide employee management section based on role
+      // Show/hide sections based on role
       if (user.position === 'SUPERVISOR' || user.position === 'MANAGER') {
         document.getElementById('employee-management-section').classList.remove('hidden');
+        document.getElementById('employee-requests-section').classList.add('hidden');
       } else {
         document.getElementById('employee-management-section').classList.add('hidden');
+        document.getElementById('employee-requests-section').classList.remove('hidden');
+        // Load employee's request history
+        loadEmployeeRequestHistory(user.id);
       }
       
       // Fetch employees who can approve requests
@@ -391,6 +894,39 @@
         submitNewEmployee();
       });
     });
+    
+    // Theme functions
+    function applyThemePreference() {
+      const prefersDark = localStorage.getItem('darkMode') === 'true' || 
+                         (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && 
+                          localStorage.getItem('darkMode') === null);
+      
+      if (prefersDark) {
+        document.body.classList.add('dark-theme');
+        document.querySelector('.sun-icon').style.display = 'none';
+        document.querySelector('.moon-icon').style.display = 'block';
+      } else {
+        document.body.classList.remove('dark-theme');
+        document.querySelector('.sun-icon').style.display = 'block';
+        document.querySelector('.moon-icon').style.display = 'none';
+      }
+    }
+    
+    function toggleTheme() {
+      const isDark = document.body.classList.contains('dark-theme');
+      
+      if (isDark) {
+        document.body.classList.remove('dark-theme');
+        document.querySelector('.sun-icon').style.display = 'block';
+        document.querySelector('.moon-icon').style.display = 'none';
+        localStorage.setItem('darkMode', 'false');
+      } else {
+        document.body.classList.add('dark-theme');
+        document.querySelector('.sun-icon').style.display = 'none';
+        document.querySelector('.moon-icon').style.display = 'block';
+        localStorage.setItem('darkMode', 'true');
+      }
+    }
     
     // Fetch employees who can approve requests
     async function fetchApprovers() {
@@ -1010,6 +1546,76 @@
       } catch (error) {
         console.error('Error:', error);
         alert('An error occurred. Please try again later.');
+      }
+    }
+
+    // Add this new function to load employee request history
+    async function loadEmployeeRequestHistory(employeeId) {
+      try {
+        const response = await fetch(`/api/approvals/employee/${employeeId}`, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+          }
+        });
+        
+        if (response.ok) {
+          const requests = await response.json();
+          const container = document.getElementById('employee-requests-container');
+          
+          if (requests.length === 0) {
+            container.innerHTML = '<div class="empty-state">You have not submitted any requests yet.</div>';
+            return;
+          }
+          
+          // Create table
+          let tableHtml = `
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Description</th>
+                  <th>Approver</th>
+                  <th>Status</th>
+                  <th>Submitted On</th>
+                  <th>Last Updated</th>
+                </tr>
+              </thead>
+              <tbody>
+          `;
+          
+          requests.forEach(request => {
+            // Format status for display
+            let statusClass = '';
+            switch(request.status) {
+              case 'APPROVED': statusClass = 'approved-status'; break;
+              case 'REJECTED': statusClass = 'rejected-status'; break;
+              case 'PENDING': statusClass = 'pending-status'; break;
+              case 'ESCALATED': statusClass = 'escalated-status'; break;
+            }
+            
+            tableHtml += `
+              <tr>
+                <td>${request.id}</td>
+                <td>${request.description}</td>
+                <td>${request.approverName || 'Pending Assignment'}</td>
+                <td><span class="${statusClass}">${request.status}</span></td>
+                <td>${request.createdAt}</td>
+                <td>${request.updatedAt || '-'}</td>
+              </tr>
+            `;
+          });
+          
+          tableHtml += `
+              </tbody>
+            </table>
+          `;
+          
+          container.innerHTML = tableHtml;
+        } else {
+          console.error('Failed to fetch employee request history');
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
     }
   </script>
