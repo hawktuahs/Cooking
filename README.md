@@ -82,7 +82,7 @@ The system comes with three default users:
 
 ### Login
 
-1. Access the login page at http://localhost:4200/login
+1. Access the login page at http://localhost:9090
 2. Enter your email and password
 3. Click "Login"
 
