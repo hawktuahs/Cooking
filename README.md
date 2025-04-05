@@ -146,3 +146,61 @@ The application uses JWT tokens for authentication. All API endpoints (except fo
 - If you encounter database connection issues, ensure your MySQL server is running and the credentials are correct.
 - For JWT token issues, check that the token hasn't expired (default expiration is 24 hours).
 - If the Angular application can't connect to the backend, verify that the Spring Boot application is running and CORS is properly configured. 
+
+
+
+
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                    APPROVAL WORKFLOW SYSTEM ARCHITECTURE                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                       │
+           ┌───────────────────────────┼───────────────────────────┐
+           ▼                           ▼                           ▼
+┌──────────────────────┐    ┌──────────────────────┐    ┌──────────────────────┐
+│  PRESENTATION LAYER  │    │    SERVICE LAYER     │    │  PERSISTENCE LAYER   │
+│  (Angular Frontend)  │    │  (Spring Boot REST)  │    │  (JPA/Hibernate)     │
+└──────────┬───────────┘    └──────────┬───────────┘    └──────────┬───────────┘
+           │                           │                           │
+           ▼                           ▼                           ▼
+┌──────────────────────┐    ┌──────────────────────┐    ┌──────────────────────┐
+│ JWT Authentication   │    │ Business Logic Layer │    │ Entity Relationship  │
+│ ├─ Token Generation  │    │ ├─ RequestService    │    │ ├─ User              │
+│ ├─ Token Validation  │    │ ├─ EmployeeService   │    │ ├─ Employee          │
+│ ├─ Role-Based Auth   │    │ ├─ ApprovalService   │    │ ├─ Request           │
+│ └─ Auth Interceptor  │    │ └─ NotificationSvc   │    │ └─ ApprovalTrace     │
+└──────────┬───────────┘    └──────────┬───────────┘    └──────────┬───────────┘
+           │                           │                           │
+           └───────────────────────────┼───────────────────────────┘
+                                       │
+                                       ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                           CORE WORKFLOW ENGINE                               │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌─────────────────┐       ┌─────────────────┐        ┌─────────────────┐    │
+│  │ Request         │       │ State Machine   │        │ Routing         │    │
+│  │ Initialization  │──────▶│ Orchestration   │──────▶ │ Algorithm      │    │
+│  └─────────────────┘       └─────────────────┘        └─────────────────┘    │
+│           │                        │                          │              │
+│           │                        │                          │              │
+│           ▼                        ▼                          ▼              │
+│  ┌─────────────────┐       ┌─────────────────┐        ┌─────────────────┐    │
+│  │ Authorization   │       │ Transition      │        │ Escalation      │    │
+│  │ Matrix Resolver │◀─────▶│ Rules Engine    │◀──────▶│ Policy Handler│    │
+│  └─────────────────┘       └─────────────────┘        └─────────────────┘    │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                       │
+           ┌───────────────────────────┼───────────────────────────┐
+           ▼                           ▼                           ▼
+┌──────────────────────┐    ┌──────────────────────┐    ┌──────────────────────┐
+│ APPROVAL PIPELINE    │    │ REQUEST LIFECYCLE    │    │ NOTIFICATION ENGINE  │
+├──────────────────────┤    ├──────────────────────┤    ├──────────────────────┤
+│ 1. Eligibility Check │    │ 1. INITIATED         │    │ 1. Event Triggers    │
+│ 2. Authority Mapping │    │ 2. PENDING_APPROVAL  │    │ 2. Template Resolver │
+│ 3. Decisioning       │    │ 3. APPROVED/REJECTED │    │ 3. Delivery Channel  │
+│ 4. Post-Processing   │    │ 4. ESCALATED         │    │ 4. Audit Trail       │
+└──────────────────────┘    │ 5. COMPLETED         │    └──────────────────────┘
+                            └──────────────────────┘
