@@ -150,5 +150,9 @@ The application uses JWT tokens for authentication. All API endpoints (except fo
 
 
 
-##Flowchart
+## Flowchart
 https://pastebin.com/9vz5e6xr
+
+## ER Diagram
+Search up PlantUML web, and paste code from pastebin onto it
+https://pastebin.com/rQbVfZap
